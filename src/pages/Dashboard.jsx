@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { createProduct,getAllProducts,deleteProduct } from "../API/ProductService"; // Add your API service file
+import { createProduct,getAllProducts,deleteProduct } from "../API/ProductService";
+
 import { toast } from 'react-hot-toast'; 
 
 const Dashboard = () => {
@@ -57,10 +58,15 @@ const Dashboard = () => {
   };
 
   //delete handler
-  const handleDelete = async (productId) => {
+async function handleDelete (productId) {
+  console.log("clicking on handledeelte function",productId);
+  
     try {
-      await deleteProduct(productId); // Call the API to delete the product
-      setProducts((prev) => prev.filter((product) => product._id !== productId)); // Remove deleted product from state
+      console.log("productID in try catch block ",productId)
+      const deletedProduct = await deleteProduct(productId); 
+      console.log(deletedProduct)
+      console.log("productID in try catch block after api call",productId)
+      setProducts((prev) => prev.filter((product) => product._id !== productId));
       toast.success("Product Deleted Successfully");
 
     } catch (error) {

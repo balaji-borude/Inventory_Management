@@ -16,9 +16,14 @@ export const LoginForm = async(formData)=>{
             headers: { "Content-Type": "application/json" }, 
         });
         
-        console.log("response of login submission -->",response)
+        // console.log("response of login submission -->",response)
+
+        // token is stored in localStoreage 
+        const token = response.data.token; 
+        localStorage.setItem("token", token);
+        console.log("printing Token After Login", token)
+
         console.log("API Response:", response.data);
-      
         return response.data;
         
     } catch (error) {
@@ -50,7 +55,7 @@ export const SignUpForm = async (formData) => {
   };
 
 
-  /// Product Api are Here 
+  // ----> Product Api are Here 
 
   // eslint-disable-next-line react-refresh/only-export-components
   export const createProduct = async (formData) => {
@@ -84,16 +89,32 @@ export const getAllProducts = async () => {
   };
 
 
-  // delete Product 
-export const deleteProduct = async (productId) => {
+  // delete product
+  export const deleteProduct = async (productId) => {
+    
     try {
-        const response = await axios.delete(`/api/product/deleteProduct/${productId}`);
-        console.log("Product is deleted ",response)
-
+      const token = localStorage.getItem("token");
+      console.log("Token from localStorage:", token);
+  
+      if (!token) {
+        throw new Error("No token available");
+      }
+  
+      const response = await axios.delete(
+        `${BASE_URL}/product/deleteProduct/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      console.log("Product deleted successfully:", response.data);
+      return response.data;
+      
     } catch (error) {
-        console.error("Failed to delete product", error);
+      console.error("Failed to delete product", error);
       throw error;
     }
- 
   };
   

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 const jwt = require('jsonwebtoken');
 
@@ -8,7 +9,10 @@ exports.auth= async(req,res,next)=>{
     try {
         console.log("Entering in Auth the middleware ");
         // get token
-        const token = req.cookies?.token; //req.header("Authorization").replace("Bearer ","");
+        const token = 
+                req.cookies?.token || 
+                req.header("Authorization")?.replace("Bearer ", "");
+ //req.header("Authorization").replace("Bearer ","");
         
         // get token from cookie --> need cookie parser --> req.cookies?.token || 
         console.log("Token in middleware ==>",token );
@@ -21,7 +25,7 @@ exports.auth= async(req,res,next)=>{
             })                                                
         };
 
-        try {
+        try  {
             const JWT_SECRET = process.env.JWT_SECRET;
             console.log("printing JWT_SECRET==> ",JWT_SECRET);
             

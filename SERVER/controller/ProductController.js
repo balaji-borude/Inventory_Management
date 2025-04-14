@@ -99,7 +99,7 @@ exports.updateProduct = async (req, res) => {
 // Delete product
 exports.deleteProduct = async (req, res) => {
   try {
-    console.log("enetring in controoler")
+    console.log("enetring in delete controller")
     const { id } = req.params;
 
    const deletedProduct = await Product.findOneAndDelete({_id: id});
