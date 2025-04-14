@@ -6,6 +6,8 @@ import axios from 'axios';
 
 const BASE_URL = "http://localhost:4000/api/v1";
 // http://localhost:4000/api/v1/login
+//import { useSelector } from 'react-redux';
+import { store } from '../app/Store'; // Import your store directly
 
 
 
@@ -86,14 +88,16 @@ export const getAllProducts = async () => {
       console.error("Error fetching products:", error);
       throw error;
     }
-  };
+};
 
 
   // delete product
   export const deleteProduct = async (productId) => {
     
+    //const token = useSelector((state) => state.auth.token);
+    const token = store.getState().auth.token; // ✅ Correct way to get token
     try {
-      const token = localStorage.getItem("token");
+      //const token = localStorage.getItem("token");
       console.log("Token from localStorage:", token);
   
       if (!token) {
@@ -117,4 +121,5 @@ export const getAllProducts = async () => {
       throw error;
     }
   };
+
   

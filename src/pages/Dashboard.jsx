@@ -52,15 +52,12 @@ const Dashboard = () => {
       toast.error("error in Creating New Product ");
 
     } ;
-
-
-
   };
 
   //delete handler
 async function handleDelete (productId) {
   console.log("clicking on handledeelte function",productId);
-  
+
     try {
       console.log("productID in try catch block ",productId)
       const deletedProduct = await deleteProduct(productId); 
@@ -74,6 +71,12 @@ async function handleDelete (productId) {
       toast.error("Error in Deleting Product");
     }
   };
+
+
+  // edit handler 
+ const editHandler= async () => {
+    
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -108,9 +111,8 @@ async function handleDelete (productId) {
             {/* Add Edit/Delete buttons here -------------------------------->  */}
             <div className="mt-4 space-x-2">
               <button className="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500 transition duration-200"
-             
+             onClick={() => editHandler(product._id)}
               >
-
                 Edit
               </button>
 
