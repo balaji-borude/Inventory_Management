@@ -3,6 +3,11 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { SignUpForm } from '../API/ProductService';
 
+// firebase signup  imports
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../API/firebase";
+
+
 const SignUp = () => {
   const navigate = useNavigate();
 
@@ -50,6 +55,25 @@ const SignUp = () => {
       toast.error('SignUp failed. Please try again.');
     }
   };
+
+  // firebase handler 
+  const firebaseHandler = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    console.log("Google SignUp Success:", user);
+    toast.success("Signup successful with Google!");
+
+    // Optional: Store user or token
+    localStorage.setItem("user", JSON.stringify(user));
+
+    navigate("/dashboard");
+  } catch (error) {
+    console.error("Google SignUp Failed:", error.message);
+    toast.error("Google Signup failed.");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-200 p-4">
