@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { LoginForm } from "../API/ProductService";
-import { toast } from 'react-hot-toast'; 
-import { useNavigate } from 'react-router-dom'; 
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
+// firebase login  imports
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../API/firebase";
 
 const Login = () => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); 
-  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,18 +28,35 @@ const Login = () => {
 
     try {
       const result = await LoginForm(formData);
-      
+
       console.log("Login Success:", result);
-      toast.success('Login successful! Redirecting to Dashboard...');
-      
-      
+      toast.success("Login successful! Redirecting to Dashboard...");
+
       setTimeout(() => {
-        navigate('/dashboard'); 
-      }, 2000); 
+        navigate("/dashboard");
+      }, 2000);
     } catch (error) {
-      
       console.error("Login Failed:", error.message);
-      toast.error('Login failed. Please check your credentials.');
+      toast.error("Login failed. Please check your credentials.");
+    }
+  };
+
+  // fireabase handler
+  const firebaseHandler = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+
+      const user = result.user;
+      console.log("Google Login Success:", user);
+
+      // Optional: Save user data or token in localStorage
+      localStorage.setItem("user", JSON.stringify(user));
+
+      toast.success("Google Login Successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Google Login Failed:", error.message);
+      toast.error("Google login failed. Try again.");
     }
   };
 
@@ -93,12 +113,32 @@ const Login = () => {
           </button>
         </form>
 
-      <div className="flex space-x-3 mt-3">
-        <p> Not having account </p>
-          <button onClick={()=> navigate("/signUp")}
-            className="text-blue-600 hover:cursor-pointer">  Create Account</button>
-      </div>
+        <div className="flex space-x-3 mt-3">
+          <p> Not having account </p>
+          <button
+            onClick={() => navigate("/signUp")}
+            className="text-blue-600 hover:cursor-pointer"
+          >
+            {" "}
+            Create Account
+          </button>
+        </div>
 
+        {/* firebase authenticatiop  */}
+        <div className="mt-6">
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 py-2 rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 transition duration-200"
+            onClick={() => firebaseHandler()}
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google Logo"
+              className="w-5 h-5"
+            />
+            <span className="font-medium">Login with Google</span>
+          </button>
+        </div>
       </div>
     </div>
   );

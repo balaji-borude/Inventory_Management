@@ -122,7 +122,26 @@ const SignUp = () => {
             SignUp
           </button>
         </form>
+              {/* firebase authenticatiop  */}
+        <div className="mt-6">
+
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 py-2 rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 transition duration-200"
+            // eslint-disable-next-line no-undef
+            onClick={()=>firebaseHandler()}
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google Logo"
+              className="w-5 h-5"
+            />
+            <span className="font-medium">Signup with Google</span>
+          </button>
+        </div>
       </div>
+
+        
     </div>
   );
 };
